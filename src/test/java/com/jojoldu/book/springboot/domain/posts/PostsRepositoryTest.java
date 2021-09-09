@@ -35,10 +35,8 @@ public class PostsRepositoryTest {
                 .content(content)
                 .author("jojoldu@gmail.com")
                 .build());
-
         //when
         List<Posts> postsList = postsRepository.findAll();
-
         //then
         Posts posts = postsList.get(0);
         assertThat(posts.getTitle()).isEqualTo(title);
