@@ -5,25 +5,29 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IndexControllerTest {
+public class ProfileControllerTest {
+
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void 메인페이지_로딩() {
-        //when
-        String body = this.restTemplate.getForObject("/", String.class);
+    public void profile은_인증없이_호출된다() throws Exception {
+        String expected = "default";
 
-        //then
-        assertThat(body).contains("스프링부트로 시작하는 웹 서비스 Ver.2..........");
-
-        //given
+        ResponseEntity<String> response = restTemplate.getForEntity("/profile", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(expected);
     }
 }
